@@ -1,0 +1,55 @@
+---
+# tasks file for local.ratpoison
+- block:
+
+  - name: assert debconf installed
+    package:
+      name: "{{item}}"
+      state: present
+    with_items:
+      - debconf
+      - debconf-utils
+ 
+  - name: configure nodm
+    debconf:
+      name: nodm
+      question: "{{item.question}}"
+      value: "{{item.value}}"
+      vtype: "{{item.vtype}}"
+    with_items:
+      - { question: "nodm/min_session_time", value: "60", vtype: "string"}
+      - { question: "nodm/first_vt", value: "7", vtype: "string"}
+      - { question: "nodm/enabled", value: "true" , vtype: "boolean"}
+      - { question: "nodm/xsession", value: "/etc/X11/Xsession" , vtype: "string"}
+      - { question: "nodm/x_options", value: "-nolisten tcp" , vtype: "string"}
+      - { question: "nodm/user", value: "vagrant" , vtype: "string"}
+
+  - name: install basic x packages
+    package:
+      name: "{{item}}"
+      state: present
+    with_items:
+      - xinit
+      - xcompmgr
+      - x11-xserver-utils
+      - ratpoison
+      - nodm
+      - rxvt-unicode
+      - firefox
+  
+  become: true
+
+- name: enable ratpoison
+  copy:
+    src: files/.xsession
+    dest: "/home/{{ ansible_user_id }}"
+    owner: "{{ ansible_user_id }}"
+    mode: 0644
+
+- name: configure ratpoison
+  template:
+    src: templates/.ratpoisonrc.j2
+    dest: "/home/{{ ansible_user_id }}/.ratpoisonrc"
+    owner: "{{ ansible_user_id }}"
+    mode: 0644
+

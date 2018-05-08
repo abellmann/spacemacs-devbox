@@ -1,0 +1,6 @@
+---
+# handlers file for local.ratpoison
+
+- name: reconfigure nodm
+  command: dpkg-reconfigure -f noninteractive nodm
+  become: true

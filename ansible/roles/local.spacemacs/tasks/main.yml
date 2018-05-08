@@ -1,0 +1,73 @@
+---
+# tasks file for local.spacemacs
+
+- name: install emacs and tools
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - emacs
+    - pandoc
+    - unzip
+  become: true
+
+- name: start emacs as daemon
+  blockinfile:
+    path: "/home/{{ ansible_user_id }}/.xsession"
+    insertafter: ".*xcompmgr.*"
+    block: |
+      # start emacs daemon
+      /usr/bin/emacs --daemon &
+
+
+- name: configure zsh 
+  blockinfile:
+    path: "/home/{{ ansible_user_id }}/.zshrc"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK FOR EMACS"
+    block: |
+      export ALTERNATE_EDITOR=""
+      export EDITOR="emacsclient -t"                  # $EDITOR should open in terminal
+      export VISUAL="emacsclient -c -a emacs"         # $VISUAL opens in GUI # with non-daemon as alternate
+
+      alias e="emacsclient -t"                      # used to be "emacs -nw"
+      alias se="sudo emacsclient -c -t -n -a emacs"                # used to be "sudo emacs -nw"
+      alias ec="emacsclient -n -a emacs"            # new - opens the GUI with alternate non-daemon
+
+- name: clone spacemacs
+  git:
+    repo: "https://github.com/syl20bnr/spacemacs"
+    dest: "~/.emacs.d"
+    update: no
+    force: no
+
+- name: copy default .spacemacs
+  copy:
+    remote_src: true
+    src: ~/.emacs.d/core/templates/.spacemacs.template
+    dest: ~/.spacemacs
+
+- name: Source Code Pro fonts installed?
+  shell: fc-list | grep "Source Code Pro"
+  register: fonts_installed
+  changed_when: false
+
+- name: Download Source Code Pro Installer
+  get_url:
+    url: https://gist.githubusercontent.com/lucasdavila/3875946/raw/1c100cae16a06bef154af0f290d665405b554b3b/install_source_code_pro.sh
+    dest: /tmp/install_source_code_pro.sh
+    mode: 0755
+  when: fonts_installed.rc == 1
+
+
+- name: install source code pro fonts
+  script: /tmp/install_source_code_pro.sh
+  when: fonts_installed.rc == 1
+
+- name: emacs daemon running?
+  shell: ps -ef | grep "[e]macs.*daemon"
+  register: emacs_running
+  changed_when: false
+
+- name: start emacs daemon to update emacs
+  shell: emacs --daemon --insecure
+  when: emacs_running.rc == 1

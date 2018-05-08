@@ -1,0 +1,34 @@
+---
+# tasks file for local.extend-keyboard
+
+- name: clone extend keyboard
+  git:
+    repo: "https://github.com/DreymaR/BigBagKbdTrix_XKB.git"
+    dest: "~/extend-keyboard"
+    update: no
+    force: no
+
+- name: install extend keyboard xmod
+  command: bash /home/{{ansible_user_id}}/extend-keyboard/install-dreymar-xmod.sh -o
+  become: true
+
+- name: replace default keyboard
+  copy:
+    src: files/keyboard
+    dest: "/etc/default/keyboard"
+    backup: yes
+  become: true
+
+- name: activate extend keyboard
+  blockinfile:
+    path: "~/.xsession"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK for extend keyboard"
+    insertbefore: ".*ratpoison.*"
+    block: |
+      # enable key repeat for all keys -> see note in https://github.com/DreymaR/BigBagKbdTrixXKB/blob/master/x-mod_v2-17-1ub1_2016-06-06/xkb/symbols/extend 
+      echo xset start
+      seq -s " r " 8 255 | xargs xset r
+      xset q
+      echo xset end
+      # Dreymars extended keyboard navigation from https://github.com/DreymaR/BigBagKbdTrix_XKB
+      setxkbmap -model 'pc104' -layout 'us' -option 'misc:extend,lv5:caps_switch_lock,grp:shifts_toggle,compose:menu'

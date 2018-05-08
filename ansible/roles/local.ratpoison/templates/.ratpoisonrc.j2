@@ -1,0 +1,40 @@
+#Startnachricht deaktivieren.
+startup_message off
+#Framegroesse veraendern.
+bind r resize
+#Fenstergroesse automatisch anpassen.
+#Bsp. Audacious
+bind t shrink
+#Beenden und Neustarten von Ratpoison
+bind F4 quit
+bind F5 restart
+#Aufheben von vorhandenen Tastenkombinationen.
+#xterm
+unbind c
+#Strg+q, anstatt von Strg+t.
+escape s-backslash
+#Aufruf der notwendigsten Anwendungen in Kombination mit Alt+[Taste].
+definekey top s-f exec firefox
+definekey top s-e exec emacsclient -c 
+definekey top s-x exec urxvt -fg white -bg black +sb -g 140x35 -fn "xft:Bitstream Vera Sans Mono:pixelsize=15" -bc
+##Alt-tab
+definekey top M-Tab next
+definekey top M-ISO_Left_Tab prev
+gdelete default
+##Das Anlegen von Arbeitsflaechen. Die Auswahl erfolgt mittels ALT+[F1-F4].
+#exec /usr/bin/rpws init 5 -k
+##Das aktive Fenster zur jeweiligen Arbeitsflaeche bewegen.  ALT+[1-4]
+#definekey top s-1 exec ratpoison -c "gmove default" -c "select -" -c "next"
+#definekey top s-2 exec ratpoison -c "gmove wspl2" -c "select -" -c "next"
+#definekey top s-3 exec ratpoison -c "gmove wspl3" -c "select -" -c "next"
+#definekey top s-4 exec ratpoison -c "gmove wspl4" -c "select -" -c "next"
+#XScreensaver ohne Logo starten.
+#exec xscreensaver -no-splash
+#Touchpad standardmäßig deaktivieren.
+#exec gsynaptics-init --sm-disable
+#automatisch Monitor ausschalten nach 3 Minuten.
+#exec xset dpms 0 0 180
+exec VBoxClient --display
+exec VBoxClient --clipboard
+exec VBoxClient --draganddrop
+

@@ -1,0 +1,56 @@
+---
+- hosts: controller
+
+  pre_tasks:
+    - name: upgrade packages
+      apt: upgrade=yes update_cache=yes cache_valid_time=300
+      become: true
+
+    - name: install basic packages
+      package:
+        name: "{{item}}"
+        state: present
+      with_items:
+        - git
+      become: true
+
+    - name: set timezone
+      timezone:
+        name: Europe/Berlin
+      become: true
+
+  roles:
+    - role: vaulttec.zsh
+      zsh_ohmy_custom_plugins:
+        - name: zsh-syntax-highlighting
+          repo: "https://github.com/zsh-users/zsh-syntax-highlighting.git"
+        - name: zsh-autosuggestions
+          repo: "https://github.com/zsh-users/zsh-autosuggestions.git"
+        - name: zsh-docker-aliases
+          repo: "https://github.com/akarzim/zsh-docker-aliases.git"
+      zsh_ohmy_plugins:
+        - git
+        - git-flow
+        - docker
+        - zsh-syntax-highlighting
+        - zsh-autosuggestions
+        - z
+        - vi-mode
+        - zsh-docker-aliases
+      become: true
+    - role: local.ratpoison
+    - role: local.spacemacs
+    - role: local.extend-keyboard
+    - role: geerlingguy.pip
+      pip_install_packages:
+        - name: docker
+          state: absent
+        - name: docker-py
+          version: 1.10.6
+        - name: docker-compose
+          version: 1.9.0
+      become: true
+    - role: geerlingguy.docker
+      become: true
+    - role: local.docker-config
+

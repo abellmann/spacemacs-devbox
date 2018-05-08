@@ -1,0 +1,10 @@
+---
+# tasks file for local.docker-config
+
+- name: add ansible user to docker group
+  user:
+    name: "{{ ansible_user_id }}"
+    groups: docker
+    append: yes
+  become: yes
+  register: add_user
