@@ -50,6 +50,7 @@
   shell: fc-list | grep "Source Code Pro"
   register: fonts_installed
   changed_when: false
+  ignore_errors: true
 
 - name: Download Source Code Pro Installer
   get_url:
@@ -67,7 +68,8 @@
   shell: ps -ef | grep "[e]macs.*daemon"
   register: emacs_running
   changed_when: false
+  ignore_errors: true
 
-- name: start emacs daemon to update emacs
+- name: start emacs daemon to update spacemacs packages 
   shell: emacs --daemon --insecure
   when: emacs_running.rc == 1
