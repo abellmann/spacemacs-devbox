@@ -15,6 +15,11 @@ Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/artful64"
 
   config.vm.define "spacemacs-devbox"
+
+  # published boxes should not replace the insecure key, since this leads
+  # to authentication errors for people using the box
+  # see https://github.com/hashicorp/vagrant/issues/5186#issuecomment-112052573
+  config.ssh.insert_key=false
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
   # `vagrant box outdated`. This is not recommended.
