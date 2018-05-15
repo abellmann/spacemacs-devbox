@@ -30,5 +30,8 @@
       seq -s " r " 8 255 | xargs xset r
       xset q
       echo xset end
-      # Dreymars extended keyboard navigation from https://github.com/DreymaR/BigBagKbdTrix_XKB
-      setxkbmap -model 'pc104' -layout 'us' -option 'misc:extend,lv5:caps_switch_lock,grp:shifts_toggle,compose:menu'
+      # Dreymars extended keyboard navigation from
+      # https://github.com/DreymaR/BigBagKbdTrix_XKB
+      # using the us-international keyboard without dead keys on a pc-104 keyboard
+      # see https://zuttobenkyou.wordpress.com/2011/08/24/xorg-using-the-us-international-altgr-intl-variant-keyboard-layout/
+      setxkbmap -rules evdev -model evdev -layout us -variant altgr-intl -option 'misc:extend,lv5:caps_switch_lock,grp:shifts_toggle,compose:menu'
