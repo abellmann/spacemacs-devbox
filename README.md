@@ -21,6 +21,16 @@ To create this box yourself you need to install vagrant and virtualbox. For vagr
 vagrant plugin install vagrant-vbguest
 ```
 
+# Building this box
+
+To run the provision process you just have to start the vagrant box with `vagrant up` 
+
+If you want to restart the ansible provisioning process after the first start of the box , you can do the following
+
+``` sh
+vagrant provision --provision-with ansible_local
+```
+
 # Creating your own Ansible Galaxy box
 
 You can install this box under your own galaxy account. To create and upload the box do the following
