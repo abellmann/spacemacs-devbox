@@ -21,6 +21,7 @@
 
   roles:
     - role: vaulttec.zsh
+      tags: vaulttec.zsh
       zsh_ohmy_custom_plugins:
         - name: zsh-syntax-highlighting
           repo: "https://github.com/zsh-users/zsh-syntax-highlighting.git"
@@ -37,11 +38,14 @@
         - z
         - vi-mode
         - zsh-docker-aliases
-      become: true
     - role: local.ratpoison
+      tags: local.ratpoison
     - role: local.spacemacs
+      tags: local.spacemacs
     - role: local.extend-keyboard
+      tags: local.extend-keyboard
     - role: geerlingguy.pip
+      tags: geerlingguy.pip
       pip_install_packages:
         - name: docker
           state: absent
@@ -51,6 +55,8 @@
           version: 1.9.0
       become: true
     - role: geerlingguy.docker
+      tags: geerlingguy.docker
       become: true
     - role: local.docker-config
+      tags: local.docker-config
 
