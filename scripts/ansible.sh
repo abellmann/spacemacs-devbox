@@ -10,4 +10,5 @@ sudo apt-get install software-properties-common
 # because the gpg check of the repository fails..
 cp /vagrant/scripts/ansible-ubuntu-ansible-artful.list /etc/apt/sources.list.d
 sudo apt-get update
+sudo apt-get install -y git
 sudo apt-get install -y ansible
