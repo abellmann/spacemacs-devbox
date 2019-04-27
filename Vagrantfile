@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "ubuntu/artful64"
+  config.vm.box = "debian/buster64"
 
   config.vm.define "spacemacs-devbox"
 
@@ -87,6 +87,6 @@ Vagrant.configure("2") do |config|
     ansible.galaxy_role_file = "ansible/requirements.yml"
     ansible.limit = "all"
     ansible.verbose = true
-#    ansible.tags = "test"
+#    ansible.tags = "local.docker-config"
   end
 end
