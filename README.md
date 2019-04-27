@@ -13,6 +13,28 @@ vagrant init abellmann/spacemacs-devbox
 vagrant up
 ```
 
+# Requirements
+
+To create this box yourself you need to install vagrant and virtualbox. For vagrant you also need the vbguest plugin. You can install it with
+
+``` sh
+vagrant plugin install vagrant-vbguest
+```
+
+# Creating your own Ansible Galaxy box
+
+You can install this box under your own galaxy account. To create and upload the box do the following
+
+I publish the box as follows
+
+``` sh
+vagrant package --base spacemacs-devbox
+vagrant cloud auth login
+vagrant cloud publish abellmann/spacemacs-devbox 0.0.3 virtualbox package.box
+```
+
+# Ansible 
+
 The box is provisioned with ansible. If you want to create this box from scratch, you can just clone this repository and then run `vagrant up` in the cloned directory.
 
 This box includes the following features.
