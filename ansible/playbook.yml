@@ -2,6 +2,18 @@
 - hosts: controller
 
   pre_tasks:
+
+    - name: install gpg required by apt-key
+      apt: 
+        name: gpg
+        state: present
+      become: true
+    - name: verify ansible installation source
+      apt_key: 
+        keyserver: keyring.debian.org
+        id: 93C4A3FD7BB9C367
+      become: true
+
     - name: upgrade packages
       apt: upgrade=yes update_cache=yes cache_valid_time=300
       become: true
