@@ -35,13 +35,23 @@ vagrant provision --provision-with ansible_local
 
 You can install this box under your own galaxy account. To create and upload the box do the following
 
-I publish the box as follows
+I publish the box as follows 
+
+For virtualbox:
 
 ``` sh
 vagrant package --base spacemacs-devbox
 vagrant cloud auth login
-vagrant cloud publish abellmann/spacemacs-devbox 0.0.3 virtualbox package.box
+vagrant cloud publish abellmann/spacemacs-devbox 0.0.4 virtualbox package.box
 ```
+
+For hyperv:
+``` sh
+vagrant package
+vagrant cloud auth login
+vagrant cloud publish abellmann/spacemacs-devbox 0.0.4 hyperv package.box
+```
+
 
 # Ansible 
 
