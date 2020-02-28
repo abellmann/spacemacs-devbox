@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "debian/buster64"
+  config.vm.box = "generic/debian10"
 
   config.vm.define "spacemacs-devbox"
 
@@ -50,13 +50,12 @@ Vagrant.configure("2") do |config|
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
   config.vm.synced_folder "c:/", "/c"
-  config.vm.synced_folder ".", "/vagrant",  mount_options: ["dmode=775,fmode=664"]
-
+  config.vm.synced_folder ".", "/vagrant"
   # Provider-specific configuration so you can fine-tune various
   # backing providers for Vagrant. These expose provider-specific options.
   # Example for VirtualBox:
   #
-  config.vm.provider "virtualbox" do |vb|
+  config.vm.provider "virtualbox" do |vb, override|
     # Display the VirtualBox GUI when booting the machine
     vb.gui = true
     vb.name = "spacemacs-devbox" 
@@ -66,7 +65,18 @@ Vagrant.configure("2") do |config|
  
     # Customize the amount of memory on the VM:
     vb.memory = "2048"
+    override.vm.synced_folder ".", "/vagrant",  mount_options: ["dmode=775,fmode=664"]
+
   end
+
+  config.vm.provider "hyperv" do |h, override|
+    # Display the VirtualBox GUI when booting the machine
+    h.maxmemory = 2048
+    h.vmname = "spacemacs-devbox"
+    override.vm.synced_folder ".", "/vagrant", type: "smb", mount_options: ["dir_mode=0775","file_mode=0664"]
+  
+  end
+  
   #
   # View the documentation for the provider you are using for more
   # information on available options.
