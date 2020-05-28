@@ -20,6 +20,9 @@ definekey top s-x exec urxvt -fg white -bg black +sb -g 140x35 -fn "xft:Bitstrea
 ##Alt-tab
 definekey top M-Tab next
 definekey top M-ISO_Left_Tab prev
+# Benutze Win-Tab to switch between open frames
+definekey top s-Tab focus
+
 gdelete default
 ##Das Anlegen von Arbeitsflaechen. Die Auswahl erfolgt mittels ALT+[F1-F4].
 #exec /usr/bin/rpws init 5 -k

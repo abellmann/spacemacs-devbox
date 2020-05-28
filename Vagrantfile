@@ -12,7 +12,7 @@ Vagrant.configure("2") do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
-  config.vm.box = "generic/debian10"
+  config.vm.box = "generic/ubuntu1810"
 
   config.vm.define "spacemacs-devbox"
 
@@ -74,6 +74,9 @@ Vagrant.configure("2") do |config|
     h.maxmemory = 2048
     h.vmname = "spacemacs-devbox"
     override.vm.synced_folder ".", "/vagrant", type: "smb", mount_options: ["dir_mode=0775","file_mode=0664"]
+	h.vm_integration_services = {
+      guest_service_interface: true
+	}
   
   end
   
